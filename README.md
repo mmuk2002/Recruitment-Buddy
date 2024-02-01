@@ -1,3 +1,4 @@
+<small>
 # Recruitment-Buddy
 
 # BACKGROUND
@@ -23,3 +24,4 @@
 # Firebase will be easier for backend and Google authentication process because this platform is meant for Vanderbilt students.
 # React will be used for frontend
 # Node.js/Express will be efficient non-blocking I/O model is particularly suited for our data-intensive, real-time application needs. The Express framework complements Node.js by providing a comprehensive feature set for both web and mobile applications, thereby streamlining our server-side development.
+</small>
