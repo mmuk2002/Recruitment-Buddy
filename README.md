@@ -17,3 +17,9 @@
 # Then, a matching algorithm works to find a mentor for the student that is best suited to help them by analyzing the prospective mentor’s experience and skill level. 
 # Finally, the application will enable both the mentee and the mentor to indicate their availability via Google Calendar to schedule an appropriate time to meet and conduct a mock interview. 
 # From this, the mentee can receive in-person feedback from an experienced mentor and hone in on their technical and speaking skills to prepare for upcoming interviews.
+
+# FRAMEWORK
+# We will be using the FERN Stack for this project.
+# Firebase will be easier for backend and Google authentication process because this platform is meant for Vanderbilt students.
+# React will be used for frontend
+# Node.js/Express will be efficient non-blocking I/O model is particularly suited for our data-intensive, real-time application needs. The Express framework complements Node.js by providing a comprehensive feature set for both web and mobile applications, thereby streamlining our server-side development.
