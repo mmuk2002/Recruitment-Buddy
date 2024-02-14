@@ -15,7 +15,7 @@ Our project aims to streamline the mock interview process so that students can f
 ## SCOPE
 The scope of this project is to create a web-based application to assist Vanderbilt students in their respective recruitment processes. 
 This application is exclusive to Vanderbilt undergraduate students and serves as a platform to enable students to help their peers secure jobs in their intended industries. 
-The application allows students to create profiles with details about their experience, skills, and interests by pulling information from the students’ LinkedIn accounts. 
+The application allows students to create profiles with details about their experience, skills, and interests. 
 Then, a matching algorithm works to find a mentor for the student that is best suited to help them by analyzing the prospective mentor’s experience and skill level. 
 Finally, the application will enable both the mentee and the mentor to indicate their availability via Google Calendar to schedule an appropriate time to meet and conduct a mock interview. 
 From this, the mentee can receive in-person feedback from an experienced mentor and hone in on their technical and speaking skills to prepare for upcoming interviews.
