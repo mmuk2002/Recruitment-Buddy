@@ -19,9 +19,17 @@ exports.getUser = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const newUser = new User({
-      name: req.body.name,
+      username: req.body.username,
       email: req.body.email,
-      password: req.body.password,
+      phoneNumber: req.body.phoneNumber,
+      role: req.body.role,
+      firebaseUid: req.body.firebaseUid,
+      fullName: req.body.fullName,
+      bio: req.body.bio,
+      skills: req.body.skills,
+      education: req.body.education,
+      experience: req.body.experience,
+      calendlyLink: req.body.calendlyLink
       // Add any other necessary fields
     });
 
@@ -41,15 +49,23 @@ exports.updateUser = async (req, res) => {
     }
 
     // Check if the authenticated user is the user themselves
-    if (user._id.toString() !== req.user.uid) {
-      return res.status(403).json({ message: 'User does not have permission to update this user' });
-    }
+    // if (req.user && req.user.uid && user._id.toString() !== req.user.uid) {
+    //   return res.status(403).json({ message: 'User does not have permission to update this user' });
+    // }
 
     const updates = {};
-    if (req.body.name) updates.name = req.body.name.trim();
+    if (req.body.username) updates.username = req.body.username.trim();
     if (req.body.email) updates.email = req.body.email.trim();
-    if (req.body.password) updates.password = req.body.password.trim();
+    if (req.body.phoneNumber) updates.phoneNumber = req.body.phoneNumber.trim();
+    if (req.body.role) updates.role = req.body.role.trim();
+    if (req.body.fullName) updates.fullName = req.body.fullName.trim();
+    if (req.body.bio) updates.bio = req.body.bio.trim();
+    if (req.body.skills) updates.skills = req.body.skills;
+    if (req.body.education) updates.education = req.body.education;
+    if (req.body.experience) updates.experience = req.body.experience;
+    if (req.body.calendlyLink) updates.calendlyLink = req.body.calendlyLink.trim();
     // Update any other necessary fields
+
 
     const updatedUser = await User.findByIdAndUpdate(req.params.userId, { $set: updates }, { new: true, runValidators: true });
     res.json(updatedUser);
@@ -67,11 +83,12 @@ exports.deleteUser = async (req, res) => {
     }
 
     // Check if the authenticated user is the user themselves
-    if (user._id.toString() !== req.user.uid) {
-      return res.status(403).json({ message: 'User does not have permission to delete this user' });
-    }
+    // if (user._id.toString() !== req.user.uid) {
+    //   return res.status(403).json({ message: 'User does not have permission to delete this user' });
+    // }
 
-    await user.remove();
+    await user.deleteOne({_id: req.params.userId});
+
     res.json({ message: 'User deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
