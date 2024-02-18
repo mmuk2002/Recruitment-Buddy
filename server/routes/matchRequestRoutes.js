@@ -11,7 +11,7 @@ const {
 // Applying authMiddleware to protect these routes
 router.post('/', authMiddleware, createMatchRequest); // Create a new match request
 router.get('/:id', authMiddleware, getMatchRequestById); // Get a match request by ID
-// router.put('/:id', authMiddleware, updateMatchRequest);
+router.put('/:id/status', authMiddleware, updateMatchRequest);
 router.delete('/:id', authMiddleware, deleteMatchRequest); // Delete a match request
 
 module.exports = router;
