@@ -10,7 +10,6 @@ connectDB();
 // Import routes
 const userRoutes = require('./routes/userRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
-const matchRoutes = require('./routes/matchRoutes'); // Adjust the path as necessary
 
 const app = express();
 
@@ -21,7 +20,6 @@ app.use(express.json());
 // Use routes
 app.use('/api/users', userRoutes);
 app.use('/api/feedback', feedbackRoutes);
-app.use('/api/matches', matchRoutes); // This line mounts your matchRoutes on the '/api' path
 
 // Handle production
 if (process.env.NODE_ENV === 'production') {
