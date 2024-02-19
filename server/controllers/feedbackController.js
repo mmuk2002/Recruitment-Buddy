@@ -15,7 +15,6 @@ exports.createFeedback = async (req, res) => {
     // Add additional server-side validation if necessary
     const newFeedback = new Feedback({
       ...req.body,
-      mentor: req.user.uid, // Set the mentor to the authenticated user
     });
     const savedFeedback = await newFeedback.save();
     res.status(201).json(savedFeedback);

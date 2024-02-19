@@ -1,5 +1,3 @@
-// server/controllers/userController.js
-
 const User = require('../models/User');
 
 // get a user's profile
