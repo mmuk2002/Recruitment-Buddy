@@ -3,7 +3,19 @@ const MatchRequest = require('../models/MatchRequest');
 
 exports.getMatchRequests = async (req, res) => {
   try {
-    const matchRequests = await MatchRequest.find();
+    console.log('req.headers:', req.headers);
+    const firebaseUUID = req.headers['firebaseuuid'];
+    if (!firebaseUUID) {
+      return res.status(400).json({ message: 'FirebaseUUID is required' });
+    }
+
+    const matchRequests = await MatchRequest.find({
+      $or: [
+        { mentee: firebaseUUID },
+        { mentor: firebaseUUID }
+      ]
+    });
+    console.log('matchRequests:', matchRequests); 
     res.json(matchRequests);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -12,11 +24,8 @@ exports.getMatchRequests = async (req, res) => {
 
 exports.createMatchRequest = async (req, res) => {
   try {
-    // Assuming the mentee is the authenticated user
-    const newMatchRequest = new MatchRequest({
-      ...req.body,
-      // mentee: req.user.uid,
-    });
+    const newMatchRequest = new MatchRequest(req.body);
+    console.log('newMatchRequest:', newMatchRequest);
     const savedMatchRequest = await newMatchRequest.save();
     res.status(201).json(savedMatchRequest);
   } catch (error) {

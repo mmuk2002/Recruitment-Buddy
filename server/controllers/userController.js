@@ -13,6 +13,15 @@ exports.getUser = async (req, res) => {
   }
 };
 
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // create a user profile
 exports.createUser = async (req, res) => {
   try {
@@ -45,12 +54,6 @@ exports.updateUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    // Check if the authenticated user is the user themselves
-    // if (req.user && req.user.uid && user._id.toString() !== req.user.uid) {
-    //   return res.status(403).json({ message: 'User does not have permission to update this user' });
-    // }
-
     const updates = {};
     if (req.body.username) updates.username = req.body.username.trim();
     if (req.body.email) updates.email = req.body.email.trim();
@@ -79,16 +82,22 @@ exports.deleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    // Check if the authenticated user is the user themselves
-    // if (user._id.toString() !== req.user.uid) {
-    //   return res.status(403).json({ message: 'User does not have permission to delete this user' });
-    // }
-
     await user.deleteOne({_id: req.params.userId});
 
     res.json({ message: 'User deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getUserByFirebaseUid = async (req, res) => {
+  try {
+    const user = await User.findOne({ firebaseUid: req.params.firebaseUid });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

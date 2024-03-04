@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 
 const matchRequestSchema = new Schema({
   mentee: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: 'User',
     required: true
   },
   mentor: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: 'User',
     required: true
   },
