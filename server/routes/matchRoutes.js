@@ -10,7 +10,7 @@ const {
 } = require('../controllers/matchController');
 
 // Applying authMiddleware to protect these routes
-router.get('/', authMiddleware, getMatches);
+router.get('/:firebaseUuid', authMiddleware, getMatches);
 router.get('/:id', authMiddleware, getMatchById)
 router.post('/', authMiddleware, createMatch);
 router.put('/:id', authMiddleware, updateMatch);

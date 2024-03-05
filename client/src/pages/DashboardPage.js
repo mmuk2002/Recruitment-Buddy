@@ -64,7 +64,6 @@ function Dashboard() {
       return;
     }
     const firebaseUid = auth.currentUser.uid;
-    console.log('Current user:', firebaseUid);
     let token;
     try {
       token = await auth.currentUser.getIdToken();
@@ -91,7 +90,6 @@ function Dashboard() {
     }
 
     const mentorId = selectedUser.firebaseUid;
-    console.log('Mentor ID:', mentorId);
     const response = await fetch('/api/matchRequest/', {
       method: 'POST',
       headers: {
