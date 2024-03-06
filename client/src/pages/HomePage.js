@@ -8,13 +8,18 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { useNavigate } from 'react-router-dom';
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
+
 // import firebase from '../firebase';
 
 function App() {
   const navigate = useNavigate();
 
-  const handleSignOut = () => {
-      navigate('/login'); // This is where you define the path to your login page
+  const logout = async () => {
+    await signOut(auth);
+    navigate('/login'); // This is where you define the path to your login page
+
   };
 
   return (
@@ -51,7 +56,7 @@ function App() {
             color="primary"
             variant="outlined"
             sx={{ my: 1, mx: 1.5, marginLeft: "auto" }}
-            onClick={handleSignOut} // Attach the handler here
+            onClick={logout} // Attach the handler here
           >
             Sign Out
           </Button >
@@ -84,10 +89,10 @@ function App() {
                     <Typography variant="h5" align="center">
                       1:1 Coaching
                     </Typography>
-                    <Typography>
+                    <Typography align="center" style={{ padding: '10px' }}>
                       The ideal choice if you want a personalized plan that is
                       tailored to your goals and lifestyle.
-                    </Typography>
+                    </Typography >
                     <Button variant="contained" color="primary">
                       Learn more
                     </Button>
@@ -106,7 +111,7 @@ function App() {
                     <Typography variant="h5" align="center">
                       Mock Interviews
                     </Typography>
-                    <Typography>
+                    <Typography align="center" style={{ padding: '10px' }}>
                       Explore wellness principles on your own schedule through a
                       variety of online lessons.
                     </Typography>
@@ -128,7 +133,7 @@ function App() {
                     <Typography variant="h5" align="center">
                       Instant Feedback
                     </Typography>
-                    <Typography>
+                    <Typography align="center" style={{ padding: '10px' }}>
                       Begin your wellness journey with full access to our
                       beginner-friendly live webinars and events.
                     </Typography>
