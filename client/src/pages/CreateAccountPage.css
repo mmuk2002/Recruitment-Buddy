@@ -1,0 +1,55 @@
+/* Add this to your CreateAccountPage.css file */
+.create-account-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .create-account-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .create-account-container form {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .create-account-container form input[type="text"],
+  .create-account-container form input[type="email"],
+  .create-account-container form input[type="tel"],
+  .create-account-container form input[type="password"],
+  .create-account-container form select,
+  .create-account-container form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px; /* Add space below each input */
+  }
+  
+  .create-account-container form textarea {
+    grid-column: span 2; /* Make textarea span two columns */
+    height: 100px; /* Set a fixed height for textareas */
+  }
+  
+  .create-account-container form button {
+    grid-column: span 2; /* Make button span two columns */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .create-account-container form button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* You might want to add additional styling for error messages, etc. */
+  
