@@ -8,6 +8,8 @@ import DashboardPage from './pages/DashboardPage';
 import NavBar from './components/NavBar';
 import MatchesPage from './pages/MatchesPage'; // Import the new page
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
+import LoginPage from './pages/LoginPage';
+
 const theme = createTheme({
   palette: {
     background: {
@@ -25,7 +27,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/matches" element={<MatchesPage />} /> // Add a new route
+          <Route path="/matches" element={<MatchesPage />} /> 
+          <Route path="/login" element={<LoginPage />} />
           {/* Add additional routes here */}
         </Routes>
       </Router>
