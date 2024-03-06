@@ -122,7 +122,7 @@ const CreateAccountPage = () => {
       setErrorMessage('Invalid email. Please use a @vanderbilt.edu email');
       return;
     }
-
+    console.log('entered handleSubmit');
     try {
       // Create user in Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -131,6 +131,7 @@ const CreateAccountPage = () => {
       // Get the Firebase ID token
       const token = await firebaseUser.getIdToken();
       // Prepare user data for MongoDB
+      console.log('firebase authentication worked')
       const userDataForMongoDB = {
         username: firebaseUser.email, // Assuming you're using email as username
         email,
@@ -145,8 +146,7 @@ const CreateAccountPage = () => {
           degree: '',
           fieldOfStudy: major,
           startDate: new Date(),
-          endDate: new Date(),
-          graduationYear
+          endDate: new Date()
         }],
         experience: [{
           title: experience, // You might need to adjust the structure based on the actual form data
@@ -154,12 +154,11 @@ const CreateAccountPage = () => {
           location: '',
           startDate: new Date(),
           endDate: new Date(),
-          description: ''
+          description: '' // Added this field
         }],
         calendlyLink: '' // Assuming you have this field in your form
       };
-
-
+      // We might need to remove required fields for testing purposes
       // Send user data to your backend for MongoDB storage
       const response = await fetch('/api/users/', {
         method: 'POST',
