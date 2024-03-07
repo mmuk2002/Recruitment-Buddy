@@ -7,6 +7,7 @@ import ProfilePage from './pages/ProfilePage';
 import DashboardPage from './pages/DashboardPage';
 import NavBar from './components/NavBar';
 import MatchesPage from './pages/MatchesPage'; // Import the new page
+import CreateAccountPage from './pages/CreateAccountPage';
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import LoginPage from './pages/LoginPage';
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/matches" element={<MatchesPage />} /> 
           <Route path="/login" element={<LoginPage />} />
+
           {/* Add additional routes here */}
         </Routes>
       </Router>

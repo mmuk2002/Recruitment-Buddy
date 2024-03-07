@@ -34,10 +34,9 @@ exports.createUser = async (req, res) => {
       fullName: req.body.fullName,
       bio: req.body.bio,
       skills: req.body.skills,
-      education: req.body.education,
-      experience: req.body.experience,
+      education: req.body.education, // expecting an array of objects
+      experience: req.body.experience, // expecting an array of objects
       calendlyLink: req.body.calendlyLink
-      // Add any other necessary fields
     });
 
     const savedUser = await newUser.save();
