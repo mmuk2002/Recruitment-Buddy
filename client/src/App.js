@@ -14,7 +14,7 @@ import LoginPage from './pages/LoginPage';
 const theme = createTheme({
   palette: {
     background: {
-      default: '#add8e6' // light blue
+      default: '#d4f1f4' // light blue
     }
   }
 });
@@ -29,6 +29,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/matches" element={<MatchesPage />} /> 
+          <Route path="/create" element={<CreateAccountPage />} /> 
           <Route path="/login" element={<LoginPage />} />
 
           {/* Add additional routes here */}

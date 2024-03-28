@@ -25,6 +25,7 @@ import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import { auth } from "../firebase";
 
 const Profile = () => {
   const [values, setValues] = useState({
@@ -56,6 +57,8 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
+  // const firebaseUid = auth.currentUser.uid;
+  
   const retrieveUserProfileData = async () => {
     try {
       const response = await getUserInfo("65cea289942e4bcd4f4f9d9d");

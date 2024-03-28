@@ -10,6 +10,7 @@ router.get('/:userId', authMiddleware, getUser);        // only for authenticate
 router.get('/firebase/:firebaseUid', authMiddleware, getUserByFirebaseUid); // new route
 router.post('/', createUser);
 router.put('/:userId', authMiddleware, updateUser);     // only for authenticated users
+// router.put('/firebase/:firebaseUid', authMiddleware, updateUserByFirebaseUid);     // only for authenticated users
 router.delete('/:userId', authMiddleware, deleteUser);  // only for authenticated users
 router.get('/', getAllUsers); // only for authenticated users
 router.get('/firebaseUid/:firebaseUid', getUserByFirebaseUid);

@@ -85,6 +85,7 @@
 
 import './CreateAccountPage.css';
 import React, { useState } from 'react';
+import { Link, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase'; // Adjust the import path as needed
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -218,6 +219,10 @@ const CreateAccountPage = () => {
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         
         <button type="submit">Create Account</button>
+        <Link href="/login#" variant="body2">
+          {"Back to login"}
+        </Link>
+        
       </form>
     </div>
   );
