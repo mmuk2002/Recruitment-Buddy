@@ -54,8 +54,6 @@ const Profile = () => {
 
   const [disabled, setDisabled] = useState(true);
 
-  const navigate = useNavigate();
-
   const retrieveUserProfileData = async () => {
     try {
       const response = await getUserInfo("65cea289942e4bcd4f4f9d9d");

@@ -22,12 +22,14 @@
     "react-phone-input-2": "^2.15.1",
     "react-router-dom": "^6.22.0",
     "react-scripts": "5.0.1",
+    "undici": "^6.10.2",
+    "util": "^0.12.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!client)/' --env=jsdom",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -49,6 +51,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "jest": "^27.5.1"
   }
 }
