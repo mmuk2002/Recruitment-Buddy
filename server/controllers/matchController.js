@@ -1,19 +1,24 @@
 const Match = require('../models/Match');
 
-// Get all matches
+// Get all matches for a specific user
 exports.getMatches = async (req, res) => {
     try {
-        const matches = await Match.find().populate('mentee mentor');
+        const matches = await Match.find({
+            $or: [
+                { mentor: req.params.firebaseUuid },
+                { mentee: req.params.firebaseUuid }
+            ]
+        });
         res.status(200).json(matches);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-// Get a single match by ID
+// Get a single match by Firebase UUID
 exports.getMatchById = async (req, res) => {
     try {
-        const match = await Match.findById(req.params.id).populate('mentee mentor');
+        const match = await Match.findOne({ _id: req.params.id }).populate('mentee mentor');
         if (!match) {
             return res.status(404).json({ message: 'Match not found' });
         }
@@ -34,10 +39,10 @@ exports.createMatch = async (req, res) => {
     }
 };
 
-// Update a match by ID
+// Update a match by Firebase UUID
 exports.updateMatch = async (req, res) => {
     try {
-        const match = await Match.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        const match = await Match.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true });
         if (!match) {
             return res.status(404).json({ message: 'Match not found' });
         }
@@ -47,10 +52,10 @@ exports.updateMatch = async (req, res) => {
     }
 };
 
-// Delete a match by ID
+// Delete a match by Firebase UUID
 exports.deleteMatch = async (req, res) => {
     try {
-        const match = await Match.findByIdAndDelete(req.params.id);
+        const match = await Match.findOneAndDelete({ _id: req.params.id });
         if (!match) {
             return res.status(404).json({ message: 'Match not found' });
         }
