@@ -24,7 +24,6 @@ exports.getAllUsers = async (req, res) => {
 
 // create a user profile
 exports.createUser = async (req, res) => {
-  console.log("called our function");
   try {
     const newUser = new User({
       username: req.body.username,

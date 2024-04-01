@@ -1,6 +1,3 @@
-// src/pages/HomePage.js
-
-
 import React from "react";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -86,4 +83,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default App;
