@@ -20,7 +20,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { MuiTelInput } from "mui-tel-input";
+// import { MuiTelInput } from "mui-tel-input";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
 import { IconButton } from "@mui/material";
@@ -296,7 +296,7 @@ const Profile = () => {
                   fullWidth={true}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+              {/* <Grid item xs={12} md={6}>
                 <MuiTelInput
                   label="Phone Number"
                   shrink={true}
@@ -308,7 +308,7 @@ const Profile = () => {
                     setPhoneNumber(e);
                   }}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} sx={{ paddingLeft: "0px" }}>
                 <FormControl fullWidth>
                   <InputLabel shrink={true}>Role</InputLabel>
