@@ -91,7 +91,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import HomePage from './pages/HomePage';
-import ProfilePage from './pages/ProfilePage';
+// import ProfilePage from './pages/ProfilePage';
+import Profile from './pages/ProfilePage2';
 import DashboardPage from './pages/DashboardPage';
 import NavBar from './components/NavBar';
 import MatchesPage from './pages/MatchesPage';
@@ -116,7 +117,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/matches" element={<MatchesPage />} />
             <Route path="/create-account" element={<CreateAccountPage />} />

@@ -1,7 +1,11 @@
 import axios from "axios";
 import { HOST } from "../host-config";
+import { useAuth } from "../AuthContext";
+import { getRequestHeaders } from "../utils/functions";
 
 export const getUserInfo = async (userId) => {
+
+  const config = await getRequestHeaders();
 
     const requestParams = {
       headers: {
@@ -10,10 +14,12 @@ export const getUserInfo = async (userId) => {
     };
 
   
-    return axios.get(HOST + "/api/users/" + userId, requestParams);
+    return axios.get(HOST + "/api/users/firebaseUid/" + userId, config);
   };
 
 export const updateUserInfo = async (userId, payload) => {
+
+  const config = await getRequestHeaders();
 
   const requestParams = {
     headers: {
@@ -22,5 +28,5 @@ export const updateUserInfo = async (userId, payload) => {
   };
 
 
-  return axios.put(HOST + "/api/users/" + userId, payload, requestParams)
+  return axios.put(HOST + "/api/users/" + userId, payload, config)
 };
