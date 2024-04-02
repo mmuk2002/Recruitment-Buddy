@@ -164,7 +164,7 @@ const ProfilePage = () => {
           id="skills"
           label="Skills"
           name="skills"
-          value={userData.skills.join(', ')} // Assuming skills is an array
+          value={Array.isArray(userData.skills) ? userData.skills.join(', ') : ''}
           onChange={(e) => setUserData({ ...userData, skills: e.target.value.split(', ') })}
         />
 
@@ -183,12 +183,12 @@ const ProfilePage = () => {
         />
 
         {/* Experience fields */}
-        {userData.experience.length > 0 && (
+        {userData.experience && userData.experience.length > 0 && (
           <Typography variant="h6" gutterBottom>
             Experience
           </Typography>
         )}
-        {userData.experience.map((exp, index) => (
+        {Array.isArray(userData.experience) && userData.experience.map((exp, index) => (
           <div key={index}>
             {/* Implement fields for each experience */}
           </div>
