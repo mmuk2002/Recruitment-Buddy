@@ -122,11 +122,11 @@ function Dashboard() {
   }
 
   const filteredUsers = users.filter(user =>
-    user.username.toLowerCase().includes(filter.toLowerCase()) &&
-    user.skills.some(skill => skill.toLowerCase().includes(skillsFilter.toLowerCase())) &&
+    user.username.toLowerCase().includes(filter.toLowerCase()) 
+    &&
+    user.skills.some(skill => skill.toLowerCase().includes(skillsFilter.toLowerCase())) 
+    &&
     user.role.toLowerCase().includes(roleFilter.toLowerCase()) 
-    // &&
-    // user.education.some(edu => edu.degree.toLowerCase().includes(educationFilter.toLowerCase()))
   );
 
   return (
