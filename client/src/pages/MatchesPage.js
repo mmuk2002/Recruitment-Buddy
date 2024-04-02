@@ -5,31 +5,27 @@ import { Box, Tab, Tabs, List, ListItem, ListItemText, Button } from '@mui/mater
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Grid } from '@mui/material';
 import { app, db, auth, signIn } from '../firebase';
+import { useAuth } from '../AuthContext'; // Import the useAuth hook
+import CircularProgress from '@mui/material/CircularProgress';
 
 function MatchesPage() {
   const [value, setValue] = useState(0);
+  const { currentUser } = useAuth(); // Use the useAuth hook to get the current user
   const [matchRequests, setMatchRequests] = useState([]);
   const [matches, setMatches] = useState([]);
   const [mentor, setMentor] = useState(null);
   const [open, setOpen] = useState(false);
   const [selectedMentee, setSelectedMentee] = useState(null);
   const auth = getAuth();
-
-  async function loginUser(email, password) {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log('User signed in');
-      fetchMatchRequests();
-    } catch (error) {
-      console.error('Error signing in:', error);
-    }
-  }
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const email = "recruitmentbuddy@gmail.com";
-    const password = "1357911";
-    loginUser(email, password);
-  }, []);
+    if (currentUser) {
+      console.log('User signed in');
+    } else {
+      console.error('No user is signed in');
+    }
+  }, [currentUser]); // Add a dependency on currentUser to the useEffect hook
 
   useEffect(() => {
     fetchMatchRequests();
@@ -42,14 +38,16 @@ function MatchesPage() {
     setOpen(true);
   };
   const handleEndMatch = async (matchId) => {
+    setLoading(true); // Start loading
     let token;
     try {
-      token = await auth.currentUser.getIdToken();
+      token = await currentUser.getIdToken();
     } catch (error) {
       console.error('Error getting ID token:', error);
+      setLoading(false); // Stop loading if there's an error
       return;
     }
-
+  
     try {
       const response = await fetch(`/api/matches/${matchId}`, {
         method: 'DELETE',
@@ -58,18 +56,20 @@ function MatchesPage() {
           'Content-Type': 'application/json'
         },
       });
-
+    
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      const data = await response.json();
-      console.log(data.message);
-
+    
+      // const data = await response.json();
+      // console.log(data.message);
+    
       // Refresh the matches
-      fetchMatches();
+      await fetchMatches();
     } catch (error) {
       console.error('Error ending match:', error);
+    } finally {
+      setLoading(false); // Stop loading when the operation is done
     }
   };
 
@@ -78,35 +78,41 @@ function MatchesPage() {
   };
 
   const handleAccept = async (requestId) => {
-    if (!auth.currentUser) {
+    setLoading(true); // Start loading
+    if (!currentUser) {
       console.log('No user is signed in');
+      setLoading(false); // Stop loading if there's an error
       return;
     }
-
+    const newMatchRequests = matchRequests.filter(req => req._id !== requestId);
+    setMatchRequests(newMatchRequests);
     let token;
     try {
-      token = await auth.currentUser.getIdToken();
+      token = await currentUser.getIdToken();
     } catch (error) {
       console.error('Error getting ID token:', error);
+      setLoading(false); // Stop loading if there's an error
       return;
     }
-
+  
     const request = matchRequests.find(req => req._id === requestId);
     if (!request) {
       console.error('Match request not found:', requestId);
+      setLoading(false); // Stop loading if there's an error
       return;
     }
-
+  
     // Fetch the mentor's information
     let mentorData;
     try {
-      const mentorResponse = await fetch(`/api/users/firebaseUid/${auth.currentUser.uid}`);
+      const mentorResponse = await fetch(`/api/users/firebaseUid/${currentUser.uid}`);
       mentorData = await mentorResponse.json();
     } catch (error) {
       console.error('Error fetching mentor:', error);
+      setLoading(false); // Stop loading if there's an error
       return;
     }
-
+  
     try {
       // Make a POST request to the backend to create a new match
       const response = await fetch('/api/matches', {
@@ -117,7 +123,7 @@ function MatchesPage() {
         },
         body: JSON.stringify({
           mentee: request.mentee.firebaseUid,
-          mentor: auth.currentUser.uid,
+          mentor: currentUser.uid,
           status: 'active',
           contactInfo: {
             email: mentorData.email,
@@ -129,7 +135,7 @@ function MatchesPage() {
       if (response.ok) {
         // If the request was successful, filter out the accepted match request
         setMatchRequests(matchRequests.filter(req => req._id !== requestId));
-        handleReject(requestId);
+        await handleReject(requestId);
       } else {
         // If the request was not successful, log the response message
         const data = await response.json();
@@ -137,20 +143,27 @@ function MatchesPage() {
       }
     } catch (error) {
       console.error('Failed to accept match request:', error);
+      setLoading(false); // Stop loading if there's an error
+    } finally {
+      setLoading(false); // Stop loading when the operation is done
     }
   };
 
   const handleReject = async (id) => {
-    if (!auth.currentUser) {
+    setLoading(true); // Start loading
+    if (!currentUser) {
       console.log('No user is signed in');
+      setLoading(false); // Stop loading if there's an error
       return;
     }
-
+    const newMatchRequests = matchRequests.filter(request => request._id !== id);
+    setMatchRequests(newMatchRequests);
     let token;
     try {
-      token = await auth.currentUser.getIdToken();
+      token = await currentUser.getIdToken();
     } catch (error) {
       console.error('Error getting ID token:', error);
+      setLoading(false); // Stop loading if there's an error
       return;
     }
 
@@ -173,6 +186,8 @@ function MatchesPage() {
       }
     } catch (error) {
       console.error('Failed to reject match request:', error);
+    } finally {
+      setLoading(false); // Stop loading when the operation is done
     }
   };
 
@@ -190,13 +205,9 @@ function MatchesPage() {
     fetchUser(matchRequest.mentor, setMentor);
   };
 
-  useEffect(() => {
-    loginUser('recruitmentbuddy@gmail.com', '1357911');
-  }, []);
-
   const fetchMatchRequests = async () => {
     try {
-      const firebaseUUID = auth.currentUser.uid;
+      const firebaseUUID = currentUser.uid;
       const response = await fetch('/api/matchRequest', {
         method: 'GET',
         headers: {
@@ -204,20 +215,23 @@ function MatchesPage() {
           'firebaseuuid': firebaseUUID
         },
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+  
       let matchRequests = await response.json();
-
+  
+      // Filter match requests where the current user is the mentor
+      matchRequests = matchRequests.filter(request => request.mentor === firebaseUUID);
+  
       // Fetch mentee information for each match request
       matchRequests = await Promise.all(matchRequests.map(async (request) => {
         const menteeResponse = await fetch(`/api/users/firebaseUid/${request.mentee}`);
         const menteeData = await menteeResponse.json();
         return { ...request, mentee: menteeData };
       }));
-
+  
       setMatchRequests(matchRequests);
     } catch (error) {
       console.error('Error fetching match requests:', error);
@@ -225,21 +239,21 @@ function MatchesPage() {
   };
 
   const fetchMatches = async () => {
-    if (!auth.currentUser) {
+    if (!currentUser) {
       console.log('No user is signed in');
       return;
     }
 
     let token;
     try {
-      token = await auth.currentUser.getIdToken();
+      token = await currentUser.getIdToken();
     } catch (error) {
       console.error('Error getting ID token:', error);
       return;
     }
 
     try {
-      const response = await fetch(`/api/matches/${auth.currentUser.uid}`, {
+      const response = await fetch(`/api/matches/${currentUser.uid}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -279,44 +293,52 @@ function MatchesPage() {
           <Tab label="Matches" />
         </Tabs>
       </Box>
-      {value === 0 && (
-        <List>
-          {matchRequests.map((request) => (
-            <ListItem key={request._id}>
-              <Button onClick={() => handleClickOpen(request)} sx={{ width: '100%', justifyContent: 'flex-start' }}>
-                <Grid container>
-                  <Grid item xs={6}>
-                    <ListItemText primary={request.mentee.fullName} />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <ListItemText secondary={request.message} />
-                  </Grid>
-                </Grid>
-              </Button>
-              <Button variant="contained" color="primary" onClick={() => handleAccept(request._id)}>Accept</Button>
-              <Button variant="contained" color="secondary" onClick={() => handleReject(request._id)}>Reject</Button>
-            </ListItem>
-          ))}
-        </List>
-      )}
-      {value === 1 && (
-        <List>
-          {matches.map((match) => (
-            <ListItem key={match._id}>
-              <Button onClick={() => handleClickOpen(match)} sx={{ width: '100%', justifyContent: 'flex-start' }}>
-                <Grid container>
-                  <Grid item xs={6}>
-                    <ListItemText primary={match.mentee.fullName} />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <ListItemText secondary={match.mentor.email} />
-                  </Grid>
-                </Grid>
-              </Button>
-              <Button variant="contained" color="secondary" onClick={() => handleEndMatch(match._id)}>End Match</Button>
-            </ListItem>
-          ))}
-        </List>
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          {value === 0 && (
+            <List>
+              {matchRequests.map((request) => (
+                <ListItem key={request._id}>
+                  <Button onClick={() => handleClickOpen(request)} sx={{ width: '100%', justifyContent: 'flex-start' }}>
+                    <Grid container>
+                      <Grid item xs={6}>
+                        <ListItemText primary={request.mentee.fullName} />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <ListItemText secondary={request.message} />
+                      </Grid>
+                    </Grid>
+                  </Button>
+                  <Button variant="contained" color="primary" onClick={() => handleAccept(request._id)}>Accept</Button>
+                  <Button variant="contained" color="secondary" onClick={() => handleReject(request._id)}>Reject</Button>
+                </ListItem>
+              ))}
+            </List>
+          )}
+          {value === 1 && (
+            <List>
+              {matches.map((match) => (
+                <ListItem key={match._id}>
+                  <Button onClick={() => handleClickOpen(match)} sx={{ width: '100%', justifyContent: 'flex-start' }}>
+                    <Grid container>
+                      <Grid item xs={6}>
+                        <ListItemText primary={match.mentee.fullName} />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <ListItemText secondary={match.mentor.email} />
+                      </Grid>
+                    </Grid>
+                  </Button>
+                  <Button variant="contained" color="secondary" onClick={() => handleEndMatch(match._id)}>End Match</Button>
+                </ListItem>
+              ))}
+            </List>
+          )}
+        </>
       )}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Match Information</DialogTitle>

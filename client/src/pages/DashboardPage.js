@@ -8,6 +8,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import { Grid, TextField, Typography } from '@material-ui/core';
 import { app, db, auth, signIn } from '../firebase';
+import { useAuth } from '../AuthContext'; // Import the useAuth hook
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 function Dashboard() {
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState('');
@@ -18,11 +22,20 @@ function Dashboard() {
   const [roleFilter, setRoleFilter] = useState('');
   const [message, setMessage] = useState('');
   const [educationFilter, setEducationFilter] = useState('');
+  const { currentUser } = useAuth(); // Use the useAuth hook to get the current user
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const handleClickOpen = (description) => {
     setDialogContent(description);
     setOpen(true);
   };
 
+  function handleSnackbarClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setSnackbarOpen(false);
+  }
   const handleClose = () => {
     setOpen(false);
   };
@@ -45,35 +58,31 @@ function Dashboard() {
     setSelectedUser(user);
   }
 
-  async function loginUser(email, password) {
-    try {
-      await signIn(auth, email, password);
-      console.log('User signed in');
-    } catch (error) {
-      console.error('Error signing in:', error);
-    }
-  }
-
   useEffect(() => {
-    loginUser('recruitmentbuddy@gmail.com', '1357911');
-  }, []);
+    if (currentUser) {
+      console.log('User signed in');
+    } else {
+      console.error('No user is signed in');
+    }
+  }, [currentUser]); // Add a dependency on currentUser to the useEffect hook
 
   async function handleMatchRequest() {
-    if (!auth.currentUser) {
+    if (!currentUser) {
       console.log('No user is signed in');
       return;
     }
-    const firebaseUid = auth.currentUser.uid;
+    const firebaseUid = currentUser.uid;
     let token;
     try {
-      token = await auth.currentUser.getIdToken();
+      token = await currentUser.getIdToken();
     } catch (error) {
       console.error('Error getting ID token:', error);
       return;
     }
     // Get the mentee ID from the server
     let menteeId;
-    const userResponse = await fetch(`/api/users/firebaseUid/${firebaseUid}`, {      headers: {
+    const userResponse = await fetch(`/api/users/firebaseUid/${firebaseUid}`, {      
+      headers: {
         'Authorization': `Bearer ${token}`,
       },
     });
@@ -109,17 +118,24 @@ function Dashboard() {
     
     const matchRequest = await response.json();
     console.log('Match request created:', matchRequest);
+    setSnackbarOpen(true);
   }
 
   const filteredUsers = users.filter(user =>
     user.username.toLowerCase().includes(filter.toLowerCase()) &&
     user.skills.some(skill => skill.toLowerCase().includes(skillsFilter.toLowerCase())) &&
-    user.role.toLowerCase().includes(roleFilter.toLowerCase()) &&
-    user.education.some(edu => edu.degree.toLowerCase().includes(educationFilter.toLowerCase()))
+    user.role.toLowerCase().includes(roleFilter.toLowerCase()) 
+    // &&
+    // user.education.some(edu => edu.degree.toLowerCase().includes(educationFilter.toLowerCase()))
   );
 
   return (
     <Container>
+          <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+      <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+        Match request sent successfully!
+      </Alert>
+    </Snackbar>
       <Typography variant="h4" component="h1" gutterBottom>
         Dashboard
       </Typography>
@@ -150,16 +166,6 @@ function Dashboard() {
             placeholder="Filter by role"
             value={roleFilter}
             onChange={event => setRoleFilter(event.target.value)}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <TextField
-            type="text"
-            placeholder="Filter by education"
-            value={educationFilter}
-            onChange={event => setEducationFilter(event.target.value)}
             variant="outlined"
             fullWidth
           />
