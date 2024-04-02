@@ -1,1 +1,1 @@
-export const HOST = "https://recruitment-buddy-10b80e66eb64.herokuapp.com/";
+export const HOST = "https://recruitment-buddy-667e3ce0e3f1.herokuapp.com/";

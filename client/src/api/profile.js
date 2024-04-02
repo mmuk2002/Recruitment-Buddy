@@ -14,7 +14,7 @@ export const getUserInfo = async (userId) => {
     };
 
   
-    return axios.get(HOST + "/api/users/firebaseUid/" + userId, config);
+    return axios.get(HOST + "api/users/firebaseUid/" + userId, config);
   };
 
 export const updateUserInfo = async (userId, payload) => {
@@ -28,5 +28,5 @@ export const updateUserInfo = async (userId, payload) => {
   };
 
 
-  return axios.put(HOST + "/api/users/" + userId, payload, config)
+  return axios.put(HOST + "api/users/" + userId, payload, config)
 };
