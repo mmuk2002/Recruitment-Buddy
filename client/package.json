@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": "0.1.0",
-  "proxy": "http://localhost:5000",
+  "proxy": "https://recruitment-buddy-10b80e66eb64.herokuapp.com/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.3",

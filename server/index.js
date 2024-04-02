@@ -24,15 +24,6 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/matchRequest', matchReqestRoutes);
 app.use('/api/matches', matchRoutes);
 
-// Handle production
-if (process.env.NODE_ENV === 'production') {
-  // Static folder
-  app.use(express.static(__dirname + '/public/'));
-  
-  // Handle SPA
-  app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
-}
-
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
