@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { HOST } from "../host-config";
 import { Container, List, ListItem, ListItemText, Card, CardContent, Button } from '@mui/material';
 import { format } from 'date-fns';
 import Dialog from '@material-ui/core/Dialog';
@@ -41,7 +42,7 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    axios.get('/api/users')
+    axios.get(HOST + 'api/users')
       .then(response => {
         setUsers(response.data);
       })
@@ -81,42 +82,35 @@ function Dashboard() {
     }
     // Get the mentee ID from the server
     let menteeId;
-    const userResponse = await fetch(`/api/users/firebaseUid/${firebaseUid}`, {      
+    const userResponse = await axios.get(HOST + `api/users/firebaseUid/${firebaseUid}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
     });
-    if (userResponse.ok) {
-      const user = await userResponse.json();
-      menteeId = user.firebaseUid;
-    } else {
-      throw new Error(`Failed to get user: ${userResponse.status}`);
-    }
-
+  
+    const user = userResponse.data;
+    menteeId = user.firebaseUid;
+  
     if (!selectedUser) {
       console.log('No user selected');
       return;
     }
-
+  
     const mentorId = selectedUser.firebaseUid;
-    const response = await fetch('/api/matchRequest/', {
-      method: 'POST',
+    const response = await axios.post(HOST+'api/matchRequest/', {
+      mentee: menteeId,
+      mentor: mentorId,
+      message: message, // Include the message
+    }, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        mentee: menteeId,
-        mentor: mentorId,
-        message: message, // Include the message
-      }),
     });
+  
     console.log('Response:', response);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
     
-    const matchRequest = await response.json();
+    const matchRequest = response.data;
     console.log('Match request created:', matchRequest);
     setSnackbarOpen(true);
   }

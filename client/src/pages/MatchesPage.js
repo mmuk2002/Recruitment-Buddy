@@ -1,5 +1,5 @@
 // src/pages/MatchesPage.js
-
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Box, Tab, Tabs, List, ListItem, ListItemText, Button } from '@mui/material';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -7,6 +7,7 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, G
 import { app, db, auth, signIn } from '../firebase';
 import { useAuth } from '../AuthContext'; // Import the useAuth hook
 import CircularProgress from '@mui/material/CircularProgress';
+import { HOST } from "../host-config";
 
 function MatchesPage() {
   const [value, setValue] = useState(0);
@@ -49,21 +50,17 @@ function MatchesPage() {
     }
   
     try {
-      const response = await fetch(`/api/matches/${matchId}`, {
-        method: 'DELETE',
+      const response = await axios.delete(HOST+`api/matches/${matchId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
       });
-    
-      if (!response.ok) {
+
+      if (response.status !== 200) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-    
-      // const data = await response.json();
-      // console.log(data.message);
-    
+
       // Refresh the matches
       await fetchMatches();
     } catch (error) {
@@ -71,7 +68,7 @@ function MatchesPage() {
     } finally {
       setLoading(false); // Stop loading when the operation is done
     }
-  };
+  }
 
   const handleClose = () => {
     setOpen(false);
@@ -105,8 +102,8 @@ function MatchesPage() {
     // Fetch the mentor's information
     let mentorData;
     try {
-      const mentorResponse = await fetch(`/api/users/firebaseUid/${currentUser.uid}`);
-      mentorData = await mentorResponse.json();
+      const mentorResponse = await axios.get(HOST + `api/users/firebaseUid/${currentUser.uid}`);
+      mentorData = mentorResponse.data;
     } catch (error) {
       console.error('Error fetching mentor:', error);
       setLoading(false); // Stop loading if there's an error
@@ -115,33 +112,32 @@ function MatchesPage() {
   
     try {
       // Make a POST request to the backend to create a new match
-      const response = await fetch('/api/matches', {
-        method: 'POST',
+      const response = await axios.post(HOST+'api/matches', {
+        mentee: request.mentee.firebaseUid,
+        mentor: currentUser.uid,
+        status: 'active',
+        contactInfo: {
+          email: mentorData.email,
+          phone: mentorData.phoneNumber
+        }
+      }, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          mentee: request.mentee.firebaseUid,
-          mentor: currentUser.uid,
-          status: 'active',
-          contactInfo: {
-            email: mentorData.email,
-            phone: mentorData.phoneNumber
-          }
-        })
       });
-      console.log('response:', response);
-      if (response.ok) {
+      setMatchRequests(matchRequests.filter(req => req._id !== requestId));
+      console.log('response:', response.status);
+      if (response.status === 201) {
         // If the request was successful, filter out the accepted match request
-        setMatchRequests(matchRequests.filter(req => req._id !== requestId));
         await handleReject(requestId);
       } else {
-        // If the request was not successful, log the response message
-        const data = await response.json();
-        console.error('Failed to accept match request:', data.message);
+        // If the request was not successful, log the response message'
+        console.log("Point 1")
+        console.error('Failed to accept match request:', response.data.message);
       }
     } catch (error) {
+      console.log("Point 2")
       console.error('Failed to accept match request:', error);
       setLoading(false); // Stop loading if there's an error
     } finally {
@@ -169,20 +165,19 @@ function MatchesPage() {
 
     try {
       // Make a DELETE request to the backend
-      const response = await fetch(`/api/matchRequest/${id}`, {
-        method: 'DELETE',
+      const response = await axios.delete(HOST+`api/matchRequest/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+
       console.log('response:', response);
-      if (response.ok) {
+      if (response.status === 200) {
         // If the request was successful, filter out the deleted match request
         setMatchRequests(matchRequests.filter(request => request._id !== id));
       } else {
         // If the request was not successful, log the response message
-        const data = await response.json();
-        console.error('Failed to reject match request:', data.message);
+        console.error('Failed to reject match request:', response.data.message);
       }
     } catch (error) {
       console.error('Failed to reject match request:', error);
@@ -193,8 +188,8 @@ function MatchesPage() {
 
   const fetchUser = async (firebaseUid, setUser) => {
     try {
-      const response = await fetch(`/api/users/firebaseUid/${firebaseUid}`);
-      const userData = await response.json();
+      const response = await axios.get(HOST + `api/users/firebaseUid/${firebaseUid}`);
+      const userData = response.data;
       setUser(userData);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -208,30 +203,29 @@ function MatchesPage() {
   const fetchMatchRequests = async () => {
     try {
       const firebaseUUID = currentUser.uid;
-      const response = await fetch('/api/matchRequest', {
-        method: 'GET',
+      const response = await axios.get(HOST+'api/matchRequest', {
         headers: {
           'Content-Type': 'application/json',
           'firebaseuuid': firebaseUUID
         },
       });
-  
-      if (!response.ok) {
+
+      if (response.status !== 200) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
-      let matchRequests = await response.json();
-  
+
+      let matchRequests = response.data;
+
       // Filter match requests where the current user is the mentor
       matchRequests = matchRequests.filter(request => request.mentor === firebaseUUID);
-  
+
       // Fetch mentee information for each match request
       matchRequests = await Promise.all(matchRequests.map(async (request) => {
-        const menteeResponse = await fetch(`/api/users/firebaseUid/${request.mentee}`);
-        const menteeData = await menteeResponse.json();
+        const menteeResponse = await axios.get(HOST+`api/users/firebaseUid/${request.mentee}`);
+        const menteeData = menteeResponse.data;
         return { ...request, mentee: menteeData };
       }));
-  
+
       setMatchRequests(matchRequests);
     } catch (error) {
       console.error('Error fetching match requests:', error);
@@ -253,30 +247,30 @@ function MatchesPage() {
     }
 
     try {
-      const response = await fetch(`/api/matches/${currentUser.uid}`, {
-        method: 'GET',
+      const response = await axios.get(HOST+`api/matches/${currentUser.uid}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
       });
-      if (!response.ok) {
+
+      if (response.status !== 200) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      let matches = await response.json();
+      let matches = response.data;
 
       // Fetch mentor and mentee information for each match
       matches = await Promise.all(matches.map(async (match) => {
-        const mentorResponse = await fetch(`/api/users/firebaseUid/${match.mentor}`);
-        const mentorData = await mentorResponse.json();
-        const menteeResponse = await fetch(`/api/users/firebaseUid/${match.mentee}`);
-        const menteeData = await menteeResponse.json();
+        const mentorResponse = await axios.get(HOST+`api/users/firebaseUid/${match.mentor}`);
+        const mentorData = mentorResponse.data;
+        const menteeResponse = await axios.get(HOST+`api/users/firebaseUid/${match.mentee}`);
+        const menteeData = menteeResponse.data;
         return { ...match, mentor: mentorData, mentee: menteeData };
       }));
+
       setMatches(matches);
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error fetching matches:', error);
     }
   };
