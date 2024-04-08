@@ -49,8 +49,8 @@ export default function NavBar() {
   };
 
   return (
-    <AppBar position="static">
-      <Toolbar>
+    <AppBar position="fixed" sx={{ bgcolor: 'rgba(0, 0, 0, 0.5)' }}>
+    <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Vanderbilt Recruitment Platform
         </Typography>
@@ -58,11 +58,11 @@ export default function NavBar() {
         <Button color="inherit" component={Link} to="/profile">Profile</Button>
         <Button color="inherit" component={Link} to="/dashboard">Dashboard</Button>
         <Button color="inherit" component={Link} to="/matches">Matches</Button>
-        {/* Sign Out Button */}
         <Button color="inherit" onClick={handleSignOut}>Sign Out</Button>
       </Toolbar>
     </AppBar>
   );
 }
+
 
 
