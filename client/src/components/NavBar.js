@@ -49,7 +49,7 @@ export default function NavBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{backgroundColor: '#154c79'}}>
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Vanderbilt Recruitment Platform

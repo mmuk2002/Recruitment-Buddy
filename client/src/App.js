@@ -103,7 +103,7 @@ import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 const theme = createTheme({
   palette: {
     background: {
-      default: '#add8e6' // light blue
+      default: '#abdbe3' // light blue
     }
   }
 });

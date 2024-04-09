@@ -230,14 +230,14 @@ const Profile = () => {
               sx={{
                 width: 100,
                 height: 100,
-                backgroundColor: "#1769aa",
+                backgroundColor: "#154c79",
                 marginBottom: "10px",
               }}
             />
             <Typography
               variant="h5"
               align="center"
-              sx={{ color: "#063257", marginBottom: "10px" }}
+              sx={{ color: "#154c79", marginBottom: "10px" }}
             >
               Profile
             </Typography>
@@ -253,7 +253,7 @@ const Profile = () => {
                   <Typography
                     variant="h6"
                     align="center"
-                    sx={{ color: "#063257", marginBottom: "5px" }}
+                    sx={{ color: "#154c79", marginBottom: "5px" }}
                   >
                     User Information:
                   </Typography>
@@ -290,7 +290,7 @@ const Profile = () => {
               <Grid item xs={12}>
               <TextField
                   label={"Password"}
-                  disabled={true}
+                  disabled={disabled}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   type="password"
@@ -440,7 +440,7 @@ const Profile = () => {
                         variant="h6"
                         align="center"
                         sx={{
-                          color: "#063257",
+                          color: "#154c79",
                           marginBottom: "5px",
                           marginTop: "10px",
                         }}
@@ -557,7 +557,7 @@ const Profile = () => {
                       variant="h6"
                       align="center"
                       sx={{
-                        color: "#063257",
+                        color: "#154c79",
                         marginBottom: "5px",
                         marginTop: "10px",
                       }}
@@ -587,7 +587,7 @@ const Profile = () => {
                               variant="h7"
                               align="center"
                               sx={{
-                                color: "#063257",
+                                color: "#154c79",
                                 marginBottom: "5px",
                                 marginTop: "10px",
                               }}
@@ -746,7 +746,7 @@ const Profile = () => {
                       variant="h7"
                       align="center"
                       sx={{
-                        color: "#063257",
+                        color: "#154c79",
                         marginBottom: "5px",
                         marginTop: "10px",
                       }}
@@ -784,7 +784,7 @@ const Profile = () => {
                         variant="h7"
                         align="center"
                         sx={{
-                          color: "#063257",
+                          color: "#154c79",
                           marginBottom: "5px",
                           marginTop: "10px",
                         }}
