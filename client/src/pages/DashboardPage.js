@@ -12,6 +12,7 @@ import { app, db, auth, signIn } from '../firebase';
 import { useAuth } from '../AuthContext'; // Import the useAuth hook
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import CalendlyWidget from '../components/CalendlyWidget'; // Adjust the path based on your file structure
 
 function Dashboard() {
   const [users, setUsers] = useState([]);
@@ -222,6 +223,8 @@ function Dashboard() {
                 ))}
               </List>
             </Typography>
+            < CalendlyWidget url="https://calendly.com/elanaagarwal/coffee-chat">
+            </CalendlyWidget>
             <TextField
               type="text"
               placeholder="Message"
