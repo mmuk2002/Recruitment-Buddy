@@ -508,6 +508,7 @@ import { useNavigate } from 'react-router-dom'; // For redirecting to the homepa
 import { Typography, TextField, Button, Container } from '@mui/material';
 import { auth } from '../firebase'; // Adjust the path as needed
 import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
+import {Paper} from "@mui/material";
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -589,25 +590,40 @@ const SignIn = () => {
   };
 
   return (
+   
     <Container maxWidth="xs" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-      <Typography variant="h5" component="h1" gutterBottom>
-        Sign In
+      <div
+        style={{
+          padding: "4px",
+        }}
+      >
+      <Paper sx={{
+          marginTop: 5,
+          padding: 3,
+          backgroundColor: '#8aebff'
+        }}>
+      <Typography sx={{color:'#000000', paddingLeft:'36%',}} variant="h5" component="h1" gutterBottom>
+        SIGN IN
       </Typography>
+      
       <form onSubmit={handleSignInWithEmail} style={{ width: '100%', marginTop: 1 }}>
+        
         <TextField
-          variant="outlined"
+          variant="standard"
           margin="normal"
           required
           fullWidth
           label="Email Address"
           name="email"
           autoComplete="email"
-          autoFocus
+          focused
           value={email}
+          color='info'
           onChange={(e) => setEmail(e.target.value)}
         />
+        
         <TextField
-          variant="outlined"
+          variant="standard"
           margin="normal"
           required
           fullWidth
@@ -615,28 +631,35 @@ const SignIn = () => {
           label="Password"
           type="password"
           autoComplete="current-password"
+          focused
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        
         <Button
           type="submit"
           fullWidth
           variant="contained"
           color="primary"
-          style={{ margin: '24px 0px 16px' }}
+          style={{ margin: '24px 0px 16px', backgroundColor: '#000000', color: '#8aebff' }}
         >
           Sign In
         </Button>
       </form>
+      
       <Button
-        variant="contained"
-        color="secondary"
+        variant="text"
+        
         onClick={signInWithGoogle}
-        style={{ margin: '8px 0px' }}
+        style={{ fontSize: '17px', margin: '8px 0px', color: '#000000', paddingLeft:'22%'}}
       >
         Sign In with Google
       </Button>
+      
+      </Paper>
+      </div>
     </Container>
+    
   );
 };
 

@@ -10,28 +10,37 @@ import SignIn from './pages/SignIn';
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import LandingPage from './pages/LandingPage';
 
+// const theme = createTheme({
+//   palette: {
+//     background: {
+//       default: 'black'
+//     },
+//     // If you are using text or elements over this background,
+//     // ensure their colors are set to maintain readability
+//     text: {
+//       primary: "#ffffff", // Example: white text for better contrast
+//       secondary: "#000000",
+//     }
+//   },
+//   components: {
+//     // Apply the background gradient globally
+//     MuiCssBaseline: {
+//       styleOverrides: {
+//         body: {
+//           backgroundColor: 'linear-gradient(45deg, #007BFF 30%, #004DFF 90%)',
+//           backgroundRepeat: 'no-repeat',
+//           backgroundAttachment: 'fixed',
+//         }
+//       }
+//     }
+//   }
+// });
+
 const theme = createTheme({
   palette: {
     background: {
       default: 'black'
     },
-    // If you are using text or elements over this background,
-    // ensure their colors are set to maintain readability
-    text: {
-      primary: "#ffffff", // Example: white text for better contrast
-    }
-  },
-  components: {
-    // Apply the background gradient globally
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          backgroundColor: 'linear-gradient(45deg, #007BFF 30%, #004DFF 90%)',
-          backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed',
-        }
-      }
-    }
   }
 });
 
