@@ -15,10 +15,8 @@ const theme = createTheme({
     background: {
       default: 'black'
     },
-    // If you are using text or elements over this background,
-    // ensure their colors are set to maintain readability
     text: {
-      primary: "#ffffff", // Example: white text for better contrast
+      primary: "#ffffff", 
     }
   },
   components: {
