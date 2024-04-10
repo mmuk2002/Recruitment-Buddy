@@ -49,10 +49,10 @@ export default function NavBar() {
   };
 
   return (
-    <AppBar position="fixed" sx={{ bgcolor: 'rgba(0, 0, 0, 0.5)' }}>
+    <AppBar position="fixed" sx={{ bgcolor: 'rgba(0, 0, 0)' }}>
     <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Vanderbilt Recruitment Platform
+        <Typography variant="h6" sx={{ flexGrow: 1, color: '#8aebff'}}>
+          Recruitment Buddy
         </Typography>
         <Button color="inherit" component={Link} to="/">Home</Button>
         <Button color="inherit" component={Link} to="/profile">Profile</Button>

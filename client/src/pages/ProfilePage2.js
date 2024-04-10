@@ -202,12 +202,12 @@ const Profile = () => {
     <div
       style={{
         minHeight: "100vh",
-        padding: "20px",
+        padding: "40px",
       }}
     >
       <Paper
         sx={{
-          marginTop: 2,
+          marginTop: 5,
           display: "flex",
           justifyContent: "center",
           padding: 2,
@@ -230,14 +230,15 @@ const Profile = () => {
               sx={{
                 width: 100,
                 height: 100,
-                backgroundColor: "#1769aa",
+                backgroundColor: "black",
+                color: '#0096b5',
                 marginBottom: "10px",
               }}
             />
             <Typography
               variant="h5"
               align="center"
-              sx={{ color: "#063257", marginBottom: "10px" }}
+              sx={{ color: "#0096b5", marginBottom: "10px" }}
             >
               Profile
             </Typography>
@@ -253,7 +254,7 @@ const Profile = () => {
                   <Typography
                     variant="h6"
                     align="center"
-                    sx={{ color: "#063257", marginBottom: "5px" }}
+                    sx={{ color: "#0096b5", marginBottom: "5px" }}
                   >
                     User Information:
                   </Typography>
@@ -388,8 +389,8 @@ const Profile = () => {
                     fullWidth={true}
                     onChange={(e) => updateProfileValue("role", e.target.value)}
                   >
-                    <MenuItem value="mentor">Mentor</MenuItem>
-                    <MenuItem value="mentee">Mentee</MenuItem>
+                    <MenuItem sx={{color: '#000000'}} value="mentor">Mentor</MenuItem>
+                    <MenuItem sx={{color: '#000000'}} value="mentee">Mentee</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -440,7 +441,7 @@ const Profile = () => {
                         variant="h6"
                         align="center"
                         sx={{
-                          color: "#063257",
+                          color: "#0096b5",
                           marginBottom: "5px",
                           marginTop: "10px",
                         }}
@@ -557,7 +558,7 @@ const Profile = () => {
                       variant="h6"
                       align="center"
                       sx={{
-                        color: "#063257",
+                        color: "#0096b5",
                         marginBottom: "5px",
                         marginTop: "10px",
                       }}
@@ -587,7 +588,7 @@ const Profile = () => {
                               variant="h7"
                               align="center"
                               sx={{
-                                color: "#063257",
+                                color: "#0096b5",
                                 marginBottom: "5px",
                                 marginTop: "10px",
                               }}
@@ -718,7 +719,7 @@ const Profile = () => {
                             <Button
                               variant="contained"
                               sx={{
-                                backgroundColor: "#1769aa",
+                                backgroundColor: "#0096b5",
                                 color: "#ffffff",
                                 marginTop: "10px",
                                 "&:hover": {
@@ -746,7 +747,7 @@ const Profile = () => {
                       variant="h7"
                       align="center"
                       sx={{
-                        color: "#063257",
+                        color: "#0096b5",
                         marginBottom: "5px",
                         marginTop: "10px",
                       }}
@@ -761,7 +762,7 @@ const Profile = () => {
                   <Button
                     variant="contained"
                     sx={{
-                      backgroundColor: "#1769aa",
+                      backgroundColor: "#0096b5",
                       color: "#ffffff",
                       marginTop: "10px",
                       "&:hover": {
@@ -784,7 +785,7 @@ const Profile = () => {
                         variant="h7"
                         align="center"
                         sx={{
-                          color: "#063257",
+                          color: "#0096b5",
                           marginBottom: "5px",
                           marginTop: "10px",
                         }}
@@ -923,7 +924,7 @@ const Profile = () => {
                     <Button
                       variant="contained"
                       sx={{
-                        backgroundColor: "#1769aa",
+                        backgroundColor: "#0096b5",
                         color: "#ffffff",
                         marginTop: "10px",
                         "&:hover": {
@@ -949,7 +950,7 @@ const Profile = () => {
                   <Grid item xs={12}>
                     <Button
                       sx={{
-                        backgroundColor: "#1769aa",
+                        backgroundColor: "#0096b5",
                         color: "#ffffff",
                         marginTop: "45px",
                         "&:hover": {
@@ -976,7 +977,7 @@ const Profile = () => {
                         resetProfileValues();
                       }}
                       sx={{
-                        color: "#1769aa",
+                        color: "#0096b5",
                         marginTop: "45px",
                         marginRight: "20px",
                       }}
@@ -988,7 +989,7 @@ const Profile = () => {
                       onClick={() => {
                         submitUpdates();
                       }}
-                      sx={{ backgroundColor: "#1769aa", marginTop: "45px" }}
+                      sx={{ backgroundColor: "#0096b5", marginTop: "45px" }}
                     >
                       Save Changes
                     </Button>

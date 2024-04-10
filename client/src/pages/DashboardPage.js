@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { HOST } from "../host-config";
-import { Container, List, ListItem, ListItemText, Card, CardContent, Button } from '@mui/material';
+import { Container, List, ListItem, ListItemText, Card, CardContent, Button, createTheme, ThemeProvider } from '@mui/material';
 import { format } from 'date-fns';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -12,6 +12,7 @@ import { app, db, auth, signIn } from '../firebase';
 import { useAuth } from '../AuthContext'; // Import the useAuth hook
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import {Paper} from "@mui/material";
 import CalendlyWidget from '../components/CalendlyWidget'; // Adjust the path based on your file structure
 
 function Dashboard() {
@@ -124,14 +125,40 @@ function Dashboard() {
     user.role.toLowerCase().includes(roleFilter.toLowerCase()) 
   );
 
+  const theme = createTheme({
+    components: {
+      TextField: {
+        styleOverrides: {
+          root: {
+            "& .MuiInput-root": {
+              color: "#000",
+              fontFamily: "Arial",
+              fontWeight: "bold",
+          }
+        }
+      }
+    },
+    color: '#ffffff'
+  }
+  })
+
   return (
-    <Container>
-          <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-      <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-        Match request sent successfully!
-      </Alert>
-    </Snackbar>
-      <Typography variant="h4" component="h1" gutterBottom>
+    <div
+      style={{
+        minHeight: "100vh",
+        padding: "40px",
+      }}
+    >
+    <Paper sx={{
+          marginTop: 5,
+          padding: 2,
+        }}>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+          Match request sent successfully!
+        </Alert>
+      </Snackbar>
+        <Typography variant="h4" style={{color: '#0096b5'}} gutterBottom>
         Dashboard
       </Typography>
       <Grid container spacing={3}>
@@ -169,62 +196,102 @@ function Dashboard() {
       <List>
         {filteredUsers.map(user => (
           <ListItem button key={user._id} onClick={() => handleUserClick(user)}>
-            <ListItemText primary={user.username} />
+            <ListItemText primary={user.fullName} style={{color: '#000000'}} />
           </ListItem>
         ))}
       </List>
       {selectedUser && (
         <Card>
-          <CardContent>
-            <Typography variant="h5" component="div">
+          <CardContent style={{backgroundColor: 'black'}}>
+            <Typography variant="h5" color='text.secondary' component="div" style={{color: '#8aebff'}}>
               {selectedUser.fullName}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" style={{paddingTop: '10px', paddingLeft:'10px'}}>
               Username: {selectedUser.username}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" style={{paddingLeft: '10px', paddingTop: '5px'}}>
               Email: {selectedUser.email}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" style={{paddingLeft: '10px', paddingTop: '5px'}}>
               Phone Number: {selectedUser.phoneNumber}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" style={{paddingLeft: '10px', paddingTop: '5px'}}>
               Role: {selectedUser.role}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" style={{paddingLeft: '10px', paddingTop: '5px'}}>
               Bio: {selectedUser.bio}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" style={{paddingLeft: '10px', paddingTop: '5px', paddingBottom: '5px'}}>
               Skills: {selectedUser.skills.join(', ')}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="h7" style={{paddingLeft: '10px'}}>
               Education:
-              <List>
-                {selectedUser.education.map((edu, index) => (
-                  <ListItem key={index}>
-                    <ListItemText
-                      primary={edu.institution}
-                      secondary={`Degree: ${edu.degree}, Field of Study: ${edu.fieldOfStudy}, Start Date: ${format(new Date(edu.startDate), 'MM/dd/yyyy')}, End Date: ${format(new Date(edu.endDate), 'MM/dd/yyyy')}`}
-                    />
-                  </ListItem>
-                ))}
-              </List>
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <List sx={{marginTop: '-15px'}}>
+              {selectedUser.education.map((edu, index) => (
+                <ListItem key={index}>
+                  <ListItemText
+                    primary={
+                      <Typography variant="body2" color="text.secondary">
+                        {edu.institution}
+                      </Typography>
+                    }
+                    secondary={
+                      <div>
+                      <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2">
+                        Degree: {edu.degree}
+                      </Typography>
+                      <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                        Field of Study: {edu.fieldOfStudy}
+                      </Typography>
+                      <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                        Start Date: {format(new Date(edu.startDate), 'MM/dd/yyyy')}
+                      </Typography>
+                      <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                        End Date: {format(new Date(edu.endDate), 'MM/dd/yyyy')}
+                      </Typography>
+                      </div>
+                      }
+                  />
+                </ListItem>
+              ))}
+            </List>
+            <Typography style={{paddingLeft: '10px'}} variant="h7">
               Experience:
-              <List>
-                {selectedUser.experience.map((exp, index) => (
-                  <ListItem button key={index} onClick={() => handleClickOpen(exp.description)}>
-                    <ListItemText
-                      primary={exp.title}
-                      secondary={`Company: ${exp.company}, Location: ${exp.location}, Start Date: ${format(new Date(exp.startDate), 'MM/dd/yyyy')}, End Date: ${format(new Date(exp.endDate), 'MM/dd/yyyy')}`}
-                    />
-                  </ListItem>
-                ))}
-              </List>
             </Typography>
+            <List>
+              {selectedUser.experience.map((exp, index) => (
+                <ListItem button key={index} onClick={() => handleClickOpen(exp.description)}>
+                  <ListItemText
+                    primary={
+                      <Typography variant="body2" color="text.secondary">
+                      {exp.title}
+                      </Typography>
+                    }
+                    secondary={
+                      <div>
+                        <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                        Company: {exp.company}
+                        </Typography>
+                        <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                          Location: {exp.location}
+                        </Typography>
+                        <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                          Start Date: {format(new Date(exp.startDate), 'MM/dd/yyyy')}
+                        </Typography>
+                        <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                          End Date: {format(new Date(exp.endDate), 'MM/dd/yyyy')}
+                        </Typography>
+                      </div>
+                    }
+                    sx={{marginTop: '-10px'}}
+                  />
+                </ListItem>
+              ))}
+            </List>
             < CalendlyWidget url="https://calendly.com/elanaagarwal/coffee-chat">
             </CalendlyWidget>
+            <Paper sx={{marginTop: '15px'}}>
             <TextField
               type="text"
               placeholder="Message"
@@ -232,8 +299,10 @@ function Dashboard() {
               onChange={event => setMessage(event.target.value)}
               variant="outlined"
               fullWidth
+              focused
             />
-            <Button variant="contained" color="primary" onClick={handleMatchRequest}>
+            </Paper>
+            <Button variant="contained" style={{marginTop: '20px', backgroundColor: '#0096b5'}} onClick={handleMatchRequest}>
               Send Match Request
             </Button>
           </CardContent>
@@ -250,7 +319,8 @@ function Dashboard() {
           </Button>
         </DialogActions>
       </Dialog>
-    </Container>
+    </Paper>
+    </div>
   );
 }
 

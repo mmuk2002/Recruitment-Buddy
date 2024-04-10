@@ -8,6 +8,7 @@ import { app, db, auth, signIn } from '../firebase';
 import { useAuth } from '../AuthContext'; // Import the useAuth hook
 import CircularProgress from '@mui/material/CircularProgress';
 import { HOST } from "../host-config";
+import {Paper} from "@mui/material";
 
 function MatchesPage() {
   const [value, setValue] = useState(0);
@@ -280,9 +281,19 @@ function MatchesPage() {
   };
 
   return (
+    <div
+      style={{
+        minHeight: "100vh",
+        padding: "40px",
+      }}
+    >
+    <Paper sx={{
+          marginTop: 5,
+          padding: 2,
+        }}>
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+        <Tabs indicatorColor='#0096b5' TabIndicatorProps={{style: {background: '#0096b5'}}} value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Match Requests" />
           <Tab label="Matches" />
         </Tabs>
@@ -299,16 +310,20 @@ function MatchesPage() {
                 <ListItem key={request._id}>
                   <Button onClick={() => handleClickOpen(request)} sx={{ width: '100%', justifyContent: 'flex-start' }}>
                     <Grid container>
-                      <Grid item xs={6}>
-                        <ListItemText primary={request.mentee.fullName} />
+                      <Grid item xs={6} md={5}>
+                        <ListItemText sx={{color: '#0096b5'}} primary={request.mentee.fullName} />
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={6} md={6}>
                         <ListItemText secondary={request.message} />
                       </Grid>
                     </Grid>
                   </Button>
-                  <Button variant="contained" color="primary" onClick={() => handleAccept(request._id)}>Accept</Button>
-                  <Button variant="contained" color="secondary" onClick={() => handleReject(request._id)}>Reject</Button>
+                  <Box sx={{paddingRight: '10px'}}>
+                  <Button variant="contained" sx={{backgroundColor: '#0096b5'}} onClick={() => handleAccept(request._id)}>Accept</Button>
+                  </Box>
+                  <Box>
+                  <Button variant="contained" sx={{backgroundColor: '#000000', color: '#8aebff'}} onClick={() => handleReject(request._id)}>Reject</Button>
+                  </Box>
                 </ListItem>
               ))}
             </List>
@@ -317,17 +332,17 @@ function MatchesPage() {
             <List>
               {matches.map((match) => (
                 <ListItem key={match._id}>
-                  <Button onClick={() => handleClickOpen(match)} sx={{ width: '100%', justifyContent: 'flex-start' }}>
+                  <Button onClick={() => handleClickOpen(match)} sx={{ width: '100%'}}>
                     <Grid container>
-                      <Grid item xs={6}>
-                        <ListItemText primary={match.mentee.fullName} />
+                      <Grid item xs={5} md={4}>
+                        <ListItemText sx={{color:'#0096b5'}} primary={match.mentee.fullName} />
                       </Grid>
-                      <Grid item xs={6}>
-                        <ListItemText secondary={match.mentor.email} />
+                      <Grid item xs={6} md={6}>
+                        <ListItemText sx={{color: '#a6a6a6'}} secondary={match.mentee.email} />
                       </Grid>
                     </Grid>
                   </Button>
-                  <Button variant="contained" color="secondary" onClick={() => handleEndMatch(match._id)}>End Match</Button>
+                  <Button variant="contained" sx={{backgroundColor: "#0096b5"}} onClick={() => handleEndMatch(match._id)}>End Match</Button>
                 </ListItem>
               ))}
             </List>
@@ -335,7 +350,7 @@ function MatchesPage() {
         </>
       )}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Match Information</DialogTitle>
+        <DialogTitle sx={{color: '#0096b5'}}>Match Information</DialogTitle>
         {selectedMentee && (
           <DialogContent>
             <DialogContentText>Name: {selectedMentee.fullName}</DialogContentText>
@@ -347,10 +362,12 @@ function MatchesPage() {
           </DialogContent>
         )}
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button sx={{color: '#0096b5'}} onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
     </Box>
+    </Paper>
+    </div>
   );
 }
 
