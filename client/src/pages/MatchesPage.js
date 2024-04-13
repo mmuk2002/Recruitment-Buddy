@@ -32,7 +32,7 @@ function MatchesPage() {
   useEffect(() => {
     fetchMatchRequests();
     fetchMatches();
-  }, [matchRequests]);
+  }, []);
 
 
   const handleClickOpen = (request) => {
@@ -40,36 +40,31 @@ function MatchesPage() {
     setOpen(true);
   };
   const handleEndMatch = async (matchId) => {
-    setLoading(true); // Start loading
+    setLoading(true);
     let token;
     try {
       token = await currentUser.getIdToken();
-    } catch (error) {
-      console.error('Error getting ID token:', error);
-      setLoading(false); // Stop loading if there's an error
-      return;
-    }
-  
-    try {
-      const response = await axios.delete(HOST+`api/matches/${matchId}`, {
+      const response = await axios.delete(`${HOST}api/matches/${matchId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
       });
-
-      if (response.status !== 200) {
+  
+      if (response.status === 200) {
+        // Directly update the state to remove the match without refetching all matches
+        const updatedMatches = matches.filter(match => match._id !== matchId);
+        setMatches(updatedMatches);
+      } else {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      // Refresh the matches
-      await fetchMatches();
     } catch (error) {
       console.error('Error ending match:', error);
     } finally {
-      setLoading(false); // Stop loading when the operation is done
+      setLoading(false);
     }
-  }
+  };
+  
 
   const handleClose = () => {
     setOpen(false);

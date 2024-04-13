@@ -8,7 +8,7 @@ const FeatureSection = () => {
     <Box sx={{ mt: 15, position: 'relative' }}>
       <Container maxWidth="xl">
       <Typography variant="h2" component="h2" my={{ xs: 6, lg: 10 }} style={gradientTextStyle} >
-        Featrures
+        Features
       </Typography>
       <Grid container spacing={2} sx={{ mt: { xs: 10, lg: 15 } }}>
         {features.map((feature, index) => (
