@@ -289,19 +289,17 @@ const Profile = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-              <TextField
-                  label={"Password"}
-                  disabled={true}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  type="password"
-                  size="small"
-                  varient="outlined"
-                  defaultValue=""
-                  InputLabelProps={{shrink: true}}
-                  fullWidth={true}
-                />
-              </Grid>
+  <TextField
+    label={"Password"}
+    value={newPassword}
+    onChange={(e) => setNewPassword(e.target.value)}
+    type="password"
+    size="small"
+    variant="outlined"
+    fullWidth={true}
+  />
+</Grid>
+
               <Grid item xs={12}>
                 <TextField
                   label={"Calendly Link"}
