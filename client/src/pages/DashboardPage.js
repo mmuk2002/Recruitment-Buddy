@@ -202,8 +202,8 @@ function Dashboard() {
       </List>
       {selectedUser && (
         <Card>
-          <CardContent style={{backgroundColor: 'black'}}>
-            <Typography variant="h5" color='text.secondary' component="div" style={{color: '#8aebff'}}>
+          <CardContent style={{backgroundColor: 'white'}}>
+            <Typography variant="h5" color='text.secondary' component="div" style={{color: 'black'}}>
               {selectedUser.fullName}
             </Typography>
             <Typography variant="body2" style={{paddingTop: '10px', paddingLeft:'10px'}}>

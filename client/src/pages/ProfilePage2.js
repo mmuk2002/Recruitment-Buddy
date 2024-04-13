@@ -988,6 +988,7 @@ const Profile = () => {
                       variant="contained"
                       onClick={() => {
                         submitUpdates();
+                        setDisabled(true);
                       }}
                       sx={{ backgroundColor: "#0096b5", marginTop: "45px" }}
                     >

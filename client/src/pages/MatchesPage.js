@@ -8,7 +8,7 @@ import { app, db, auth, signIn } from '../firebase';
 import { useAuth } from '../AuthContext'; // Import the useAuth hook
 import CircularProgress from '@mui/material/CircularProgress';
 import { HOST } from "../host-config";
-import {Paper} from "@mui/material";
+import { Paper } from "@mui/material";
 
 function MatchesPage() {
   const [value, setValue] = useState(0);
@@ -50,7 +50,7 @@ function MatchesPage() {
           'Content-Type': 'application/json'
         },
       });
-  
+
       if (response.status === 200) {
         // Directly update the state to remove the match without refetching all matches
         const updatedMatches = matches.filter(match => match._id !== matchId);
@@ -64,7 +64,7 @@ function MatchesPage() {
       setLoading(false);
     }
   };
-  
+
 
   const handleClose = () => {
     setOpen(false);
@@ -87,14 +87,14 @@ function MatchesPage() {
       setLoading(false); // Stop loading if there's an error
       return;
     }
-  
+
     const request = matchRequests.find(req => req._id === requestId);
     if (!request) {
       console.error('Match request not found:', requestId);
       setLoading(false); // Stop loading if there's an error
       return;
     }
-  
+
     // Fetch the mentor's information
     let mentorData;
     try {
@@ -105,10 +105,10 @@ function MatchesPage() {
       setLoading(false); // Stop loading if there's an error
       return;
     }
-  
+
     try {
       // Make a POST request to the backend to create a new match
-      const response = await axios.post(HOST+'api/matches', {
+      const response = await axios.post(HOST + 'api/matches', {
         mentee: request.mentee.firebaseUid,
         mentor: currentUser.uid,
         status: 'active',
@@ -161,7 +161,7 @@ function MatchesPage() {
 
     try {
       // Make a DELETE request to the backend
-      const response = await axios.delete(HOST+`api/matchRequest/${id}`, {
+      const response = await axios.delete(HOST + `api/matchRequest/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -199,7 +199,7 @@ function MatchesPage() {
   const fetchMatchRequests = async () => {
     try {
       const firebaseUUID = currentUser.uid;
-      const response = await axios.get(HOST+'api/matchRequest', {
+      const response = await axios.get(HOST + 'api/matchRequest', {
         headers: {
           'Content-Type': 'application/json',
           'firebaseuuid': firebaseUUID
@@ -217,7 +217,7 @@ function MatchesPage() {
 
       // Fetch mentee information for each match request
       matchRequests = await Promise.all(matchRequests.map(async (request) => {
-        const menteeResponse = await axios.get(HOST+`api/users/firebaseUid/${request.mentee}`);
+        const menteeResponse = await axios.get(HOST + `api/users/firebaseUid/${request.mentee}`);
         const menteeData = menteeResponse.data;
         return { ...request, mentee: menteeData };
       }));
@@ -243,7 +243,7 @@ function MatchesPage() {
     }
 
     try {
-      const response = await axios.get(HOST+`api/matches/${currentUser.uid}`, {
+      const response = await axios.get(HOST + `api/matches/${currentUser.uid}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -258,11 +258,11 @@ function MatchesPage() {
 
       // Fetch mentor and mentee information for each match
       matches = await Promise.all(matches.map(async (match) => {
-        const mentorResponse = await axios.get(HOST+`api/users/firebaseUid/${match.mentor}`);
+        const mentorResponse = await axios.get(HOST + `api/users/firebaseUid/${match.mentor}`);
         const mentorData = mentorResponse.data;
-        const menteeResponse = await axios.get(HOST+`api/users/firebaseUid/${match.mentee}`);
+        const menteeResponse = await axios.get(HOST + `api/users/firebaseUid/${match.mentee}`);
         const menteeData = menteeResponse.data;
-        return { ...match, mentor: mentorData, mentee: menteeData };
+        return { ...match, mentor: mentorData, mentee: menteeData, displayAsMentor: currentUser.uid === match.mentor };
       }));
 
       setMatches(matches);
@@ -272,6 +272,8 @@ function MatchesPage() {
   };
 
   const handleChange = (event, newValue) => {
+    fetchMatchRequests();
+    fetchMatches();
     setValue(newValue);
   };
 
@@ -282,86 +284,91 @@ function MatchesPage() {
         padding: "40px",
       }}
     >
-    <Paper sx={{
-          marginTop: 5,
-          padding: 2,
-        }}>
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs indicatorColor='#0096b5' TabIndicatorProps={{style: {background: '#0096b5'}}} value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Match Requests" />
-          <Tab label="Matches" />
-        </Tabs>
-      </Box>
-      {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-          <CircularProgress />
+      <Paper sx={{
+        marginTop: 5,
+        padding: 2,
+      }}>
+        <Box sx={{ width: '100%' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs indicatorColor='#0096b5' TabIndicatorProps={{ style: { background: '#0096b5' } }} value={value} onChange={handleChange} aria-label="basic tabs example">
+              <Tab label="Match Requests" />
+              <Tab label="Matches" />
+            </Tabs>
+          </Box>
+          {loading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <>
+              {value === 0 && (
+                <List>
+                  {matchRequests.map((request) => (
+                    <ListItem key={request._id}>
+                      <Button onClick={() => handleClickOpen(request)} sx={{ width: '100%', justifyContent: 'flex-start' }}>
+                        <Grid container>
+                          <Grid item xs={6} md={5}>
+                            <ListItemText sx={{ color: '#0096b5' }} primary={request.mentee.fullName} />
+                          </Grid>
+                          <Grid item xs={6} md={6}>
+                            <ListItemText secondary={request.message} />
+                          </Grid>
+                        </Grid>
+                      </Button>
+                      <Box sx={{ paddingRight: '10px' }}>
+                        <Button variant="contained" sx={{ backgroundColor: '#0096b5' }} onClick={() => handleAccept(request._id)}>Accept</Button>
+                      </Box>
+                      <Box>
+                        <Button variant="contained" sx={{ backgroundColor: '#000000', color: '#8aebff' }} onClick={() => handleReject(request._id)}>Reject</Button>
+                      </Box>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+              {value === 1 && (
+                <List>
+                  {matches.map((match) => (
+                    <ListItem key={match._id}>
+                      <Button onClick={() => handleClickOpen(match)} sx={{ width: '100%' }}>
+                        <Grid container>
+                          <Grid item xs={5} md={4}>
+                            <ListItemText sx={{ color: '#0096b5' }} primary={
+                              match.displayAsMentor ? match.mentee.fullName : match.mentor.fullName
+                            } />
+                          </Grid>
+                          <Grid item xs={6} md={6}>
+                            <ListItemText sx={{ color: '#a6a6a6' }} secondary={
+                              match.displayAsMentor ? match.mentee.email : match.mentor.email
+                            } />
+                          </Grid>
+                        </Grid>
+                      </Button>
+                      <Button variant="contained" sx={{ backgroundColor: "#0096b5" }} onClick={() => handleEndMatch(match._id)}>End Match</Button>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+
+            </>
+          )}
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle sx={{ color: '#0096b5' }}>Match Information</DialogTitle>
+            {selectedMentee && (
+              <DialogContent>
+                <DialogContentText>Name: {selectedMentee.fullName}</DialogContentText>
+                <DialogContentText>Email: {selectedMentee.email}</DialogContentText>
+                <DialogContentText>Phone: {selectedMentee.phoneNumber}</DialogContentText>
+                <DialogContentText>Skills: {selectedMentee.skills.join(', ')}</DialogContentText>
+                <DialogContentText>Calendly Link: {selectedMentee.calendlyLink}</DialogContentText>
+                {/* Add more fields as needed */}
+              </DialogContent>
+            )}
+            <DialogActions>
+              <Button sx={{ color: '#0096b5' }} onClick={handleClose}>Close</Button>
+            </DialogActions>
+          </Dialog>
         </Box>
-      ) : (
-        <>
-          {value === 0 && (
-            <List>
-              {matchRequests.map((request) => (
-                <ListItem key={request._id}>
-                  <Button onClick={() => handleClickOpen(request)} sx={{ width: '100%', justifyContent: 'flex-start' }}>
-                    <Grid container>
-                      <Grid item xs={6} md={5}>
-                        <ListItemText sx={{color: '#0096b5'}} primary={request.mentee.fullName} />
-                      </Grid>
-                      <Grid item xs={6} md={6}>
-                        <ListItemText secondary={request.message} />
-                      </Grid>
-                    </Grid>
-                  </Button>
-                  <Box sx={{paddingRight: '10px'}}>
-                  <Button variant="contained" sx={{backgroundColor: '#0096b5'}} onClick={() => handleAccept(request._id)}>Accept</Button>
-                  </Box>
-                  <Box>
-                  <Button variant="contained" sx={{backgroundColor: '#000000', color: '#8aebff'}} onClick={() => handleReject(request._id)}>Reject</Button>
-                  </Box>
-                </ListItem>
-              ))}
-            </List>
-          )}
-          {value === 1 && (
-            <List>
-              {matches.map((match) => (
-                <ListItem key={match._id}>
-                  <Button onClick={() => handleClickOpen(match)} sx={{ width: '100%'}}>
-                    <Grid container>
-                      <Grid item xs={5} md={4}>
-                        <ListItemText sx={{color:'#0096b5'}} primary={match.mentee.fullName} />
-                      </Grid>
-                      <Grid item xs={6} md={6}>
-                        <ListItemText sx={{color: '#a6a6a6'}} secondary={match.mentee.email} />
-                      </Grid>
-                    </Grid>
-                  </Button>
-                  <Button variant="contained" sx={{backgroundColor: "#0096b5"}} onClick={() => handleEndMatch(match._id)}>End Match</Button>
-                </ListItem>
-              ))}
-            </List>
-          )}
-        </>
-      )}
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle sx={{color: '#0096b5'}}>Match Information</DialogTitle>
-        {selectedMentee && (
-          <DialogContent>
-            <DialogContentText>Name: {selectedMentee.fullName}</DialogContentText>
-            <DialogContentText>Email: {selectedMentee.email}</DialogContentText>
-            <DialogContentText>Phone: {selectedMentee.phoneNumber}</DialogContentText>
-            <DialogContentText>Skills: {selectedMentee.skills.join(', ')}</DialogContentText>
-            <DialogContentText>Calendly Link: {selectedMentee.calendlyLink}</DialogContentText>
-            {/* Add more fields as needed */}
-          </DialogContent>
-        )}
-        <DialogActions>
-          <Button sx={{color: '#0096b5'}} onClick={handleClose}>Close</Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
-    </Paper>
+      </Paper>
     </div>
   );
 }

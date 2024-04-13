@@ -1,1 +1,1 @@
-export const HOST = "http://localhost:5000/";
+export const HOST = "https://recruitment-buddy-667e3ce0e3f1.herokuapp.com/";
