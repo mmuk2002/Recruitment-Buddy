@@ -30,7 +30,7 @@ import { auth } from "../firebase";
 import { updatePassword } from 'firebase/auth';
 
 const Profile = () => {
-    const { currentUser } = useAuth();
+  const { currentUser } = useAuth();
   const [values, setValues] = useState({
     fullName: "",
     phoneNumber: "",
@@ -62,18 +62,18 @@ const Profile = () => {
   const retrieveUserProfileData = async () => {
     console.log("This function is hit.")
     if (currentUser) {
-        try {
-        
-            const response = await getUserInfo(currentUser.uid);
-      
-            setProfileData(response.data);
-            setOriginalData(response.data);
-          } catch (e) {
-            console.log(e);
-          }
+      try {
+
+        const response = await getUserInfo(currentUser.uid);
+
+        setProfileData(response.data);
+        setOriginalData(response.data);
+      } catch (e) {
+        console.log(e);
+      }
 
     }
-    
+
   };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -116,14 +116,14 @@ const Profile = () => {
         bio: profileDataCopy["bio"],
         skills:
           profileDataCopy["skills"] !== null &&
-          profileDataCopy["skills"] !== undefined &&
-          profileDataCopy["skills"].length !== 0
+            profileDataCopy["skills"] !== undefined &&
+            profileDataCopy["skills"].length !== 0
             ? profileDataCopy["skills"].join(", ")
             : "",
         education:
           profileDataCopy["education"] !== null &&
-          profileDataCopy["education"] !== undefined &&
-          profileDataCopy["education"].length !== 0
+            profileDataCopy["education"] !== undefined &&
+            profileDataCopy["education"].length !== 0
             ? profileDataCopy["education"][0]
             : "",
         experience: profileDataCopy["experience"],
@@ -170,17 +170,17 @@ const Profile = () => {
 
   const submitUpdates = async () => {
     if (!currentUser) {
-        alert('You need to be signed in to update your profile');
-        return;
-      }
+      alert('You need to be signed in to update your profile');
+      return;
+    }
 
     try {
       let updatedValues = Object.assign({}, values);
 
-    //   let numbersOnlyPhone = phoneNumber.replace(/\D/g, "");
-        updatedValues.phoneNumber = phoneNumber;
+      //   let numbersOnlyPhone = phoneNumber.replace(/\D/g, "");
+      updatedValues.phoneNumber = phoneNumber;
 
-    //   updatedValues.phoneNumber = numbersOnlyPhone.substring(1);
+      //   updatedValues.phoneNumber = numbersOnlyPhone.substring(1);
 
       // Use updated values as the payload for the request to the backend.
       // Make the call to the backend here.
@@ -270,7 +270,7 @@ const Profile = () => {
                   size="small"
                   varient="outlined"
                   defaultValue=""
-                  InputLabelProps={{shrink: true}}
+                  InputLabelProps={{ shrink: true }}
                   fullWidth={true}
                 />
               </Grid>
@@ -284,21 +284,24 @@ const Profile = () => {
                   size="small"
                   varient="outlined"
                   defaultValue=""
-                  InputLabelProps={{shrink: true}}
+                  InputLabelProps={{ shrink: true }}
                   fullWidth={true}
                 />
               </Grid>
               <Grid item xs={12}>
-  <TextField
-    label={"Password"}
-    value={newPassword}
-    onChange={(e) => setNewPassword(e.target.value)}
-    type="password"
-    size="small"
-    variant="outlined"
-    fullWidth={true}
-  />
-</Grid>
+                <TextField
+                  label={"Password"}
+                  fullWidth={true}
+                  shrink={true}
+                  disabled={disabled}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  type="password"
+                  size="small"
+                  varient="outlined"
+                  defaultValue=""
+                />
+              </Grid>
 
               <Grid item xs={12}>
                 <TextField
@@ -345,7 +348,7 @@ const Profile = () => {
                 />
               </Grid> */}
               <Grid item xs={12} md={6}>
-              <TextField
+                <TextField
                   disabled={disabled}
                   value={phoneNumber}
                   onChange={(e) =>
@@ -387,8 +390,8 @@ const Profile = () => {
                     fullWidth={true}
                     onChange={(e) => updateProfileValue("role", e.target.value)}
                   >
-                    <MenuItem sx={{color: '#000000'}} value="mentor">Mentor</MenuItem>
-                    <MenuItem sx={{color: '#000000'}} value="mentee">Mentee</MenuItem>
+                    <MenuItem sx={{ color: '#000000' }} value="mentor">Mentor</MenuItem>
+                    <MenuItem sx={{ color: '#000000' }} value="mentee">Mentee</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -425,8 +428,8 @@ const Profile = () => {
                 />
               </Grid>
               {values.education !== "" &&
-              values.education !== null &&
-              values.education !== undefined ? (
+                values.education !== null &&
+                values.education !== undefined ? (
                 <Grid
                   container
                   spacing={1}
@@ -568,9 +571,9 @@ const Profile = () => {
               </Grid>
 
               {values.experience !== null &&
-              values.experience !== undefined &&
-              values.experience !== "" &&
-              values.experience.length !== 0 ? (
+                values.experience !== undefined &&
+                values.experience !== "" &&
+                values.experience.length !== 0 ? (
                 <Grid
                   container
                   spacing={1}
