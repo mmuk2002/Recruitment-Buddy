@@ -289,7 +289,7 @@ function Dashboard() {
                 </ListItem>
               ))}
             </List>
-            < CalendlyWidget url="https://calendly.com/elanaagarwal/coffee-chat">
+            < CalendlyWidget url={selectedUser.calendlyLink}>
             </CalendlyWidget>
             <Paper sx={{marginTop: '15px'}}>
             <TextField
