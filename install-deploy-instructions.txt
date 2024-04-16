@@ -1,0 +1,17 @@
+Installation and Deployment Instructions:
+
+Installation:
+  Open the project inside an IDE. 
+    Navigate inside the client folder and run the command 'npm install' in the terminal.
+    Navigate inside the server folder and run the command 'npm install' in the terminal.
+  This should install necessary dependencies for the project. 
+  To run the app:
+    Type 'npm start' in the terminal (client directory) to run the forntend.
+    Type 'npm start' in the terminal (server directory) to run the backedn.
+    
+Deployment:
+  The frontend of the application was deployed on Vercel. 
+  The backend of the application on Heroku.
+
+  URL to access deployed app: https://recruitment-buddy.vercel.app/sign-in
+    Enter this URL in your browser to access the deployed application.
