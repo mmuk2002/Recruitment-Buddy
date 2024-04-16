@@ -238,16 +238,16 @@ function Dashboard() {
                     }
                     secondary={
                       <div>
-                      <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2">
+                      <Typography style={{paddingLeft: '10px', color: 'black'}} variant="body2">
                         Degree: {edu.degree}
                       </Typography>
-                      <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                      <Typography style={{paddingLeft: '10px', color: 'black'}} variant="body2" color="text.secondary">
                         Field of Study: {edu.fieldOfStudy}
                       </Typography>
-                      <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                      <Typography style={{paddingLeft: '10px', color: 'black'}} variant="body2" color="text.secondary">
                         Start Date: {format(new Date(edu.startDate), 'MM/dd/yyyy')}
                       </Typography>
-                      <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                      <Typography style={{paddingLeft: '10px', color: 'black'}} variant="body2" color="text.secondary">
                         End Date: {format(new Date(edu.endDate), 'MM/dd/yyyy')}
                       </Typography>
                       </div>
@@ -270,16 +270,16 @@ function Dashboard() {
                     }
                     secondary={
                       <div>
-                        <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                        <Typography style={{paddingLeft: '10px', color: 'black'}} variant="body2" color="text.secondary">
                         Company: {exp.company}
                         </Typography>
-                        <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                        <Typography style={{paddingLeft: '10px', color: 'black'}} variant="body2" color="text.secondary">
                           Location: {exp.location}
                         </Typography>
-                        <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                        <Typography style={{paddingLeft: '10px', color: 'black'}} variant="body2" color="text.secondary">
                           Start Date: {format(new Date(exp.startDate), 'MM/dd/yyyy')}
                         </Typography>
-                        <Typography style={{paddingLeft: '10px', color: 'white'}} variant="body2" color="text.secondary">
+                        <Typography style={{paddingLeft: '10px', color: 'black'}} variant="body2" color="text.secondary">
                           End Date: {format(new Date(exp.endDate), 'MM/dd/yyyy')}
                         </Typography>
                       </div>
