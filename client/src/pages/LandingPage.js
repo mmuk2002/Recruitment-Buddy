@@ -6,15 +6,8 @@ import AboutSection from './AboutPage';
 import gradientTextStyle from '../components/fontStyle';
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 
-// ScrollArrow component
-const ScrollArrow = ({ onClick }) => (
-  <IconButton onClick={onClick} sx={{ color: 'white', alignSelf: 'center', position: 'absolute', bottom: 16 }}>
-    <ArrowDownwardIcon fontSize="large" />
-  </IconButton>
-);
-
 // HeroSection modified to be full screen
-const HeroSection = ({ scrollToNext }) => {
+const HeroSection = () => {
   return (
     <Box sx={{
       display: 'flex',
@@ -35,7 +28,6 @@ const HeroSection = ({ scrollToNext }) => {
       }}>
         Take Proactive Steps to Achieve Your Professional Goals 
       </Typography>
-      <ScrollArrow onClick={scrollToNext} />
     </Box>
   );
 };
