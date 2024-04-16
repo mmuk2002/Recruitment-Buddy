@@ -30,7 +30,7 @@ const Testimonials = () => {
                 <Avatar src={testimonial.image} alt={testimonial.user} sx={{ width: 48, height: 48, mr: 2, border: 1, borderColor: 'neutral.light' }} />
                 <Box>
                   <Typography variant="subtitle1">{testimonial.user}</Typography>
-                  <Typography variant="body2" sx={{ fontStyle: 'italic', color: 'text.secondary' }}>
+                  <Typography variant="body2" sx={{ fontStyle: 'italic', color: 'white' }}>
                     {testimonial.company}
                   </Typography>
                 </Box>
