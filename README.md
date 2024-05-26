@@ -12,6 +12,9 @@ If they are lucky enough to get in contact with an employee at their desired com
 Also, during the interview, the interviewer has to dedicate time and energy to figuring out which questions they should ask for the position the student is interviewing for. 
 Our project aims to streamline the mock interview process so that students can focus more time on preparation rather than logistics.
 
+## GET STARTED
+Clone the repository, and then npm install inside both client and server folders, and then npm start inside each of them.
+
 ## SCOPE
 The scope of this project is to create a web-based application to assist Vanderbilt students in their respective recruitment processes. 
 This application is exclusive to Vanderbilt undergraduate students and serves as a platform to enable students to help their peers secure jobs in their intended industries. 
